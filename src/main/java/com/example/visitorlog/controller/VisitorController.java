@@ -60,4 +60,21 @@ public class VisitorController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Visitor> updateVisitor(@PathVariable Long id,
+                                                 @RequestBody Visitor updatedVisitor) {
+
+        for (Visitor visitor : visitors) {
+            if (visitor.getId().equals(id)) {
+                visitor.setName(updatedVisitor.getName());
+                visitor.setCompany(updatedVisitor.getCompany());
+                visitor.setPurpose(updatedVisitor.getPurpose());
+
+                return ResponseEntity.ok(visitor);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
 }
