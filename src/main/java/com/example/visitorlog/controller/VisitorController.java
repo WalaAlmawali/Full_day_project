@@ -15,11 +15,11 @@ import static com.sun.tools.javac.jvm.ByteCodes.ret;
 public class VisitorController {
 
     private List<Visitor> visitors = new ArrayList<>();
-    private AtomicLong counter= new AtomicLong();
+    private AtomicLong counter = new AtomicLong();
 
 
     @GetMapping
-    public List<Visitor> getAllVisitors(){
+    public List<Visitor> getAllVisitors() {
         return visitors;
     }
 
@@ -34,13 +34,22 @@ public class VisitorController {
     }
 
     @PostMapping
-    public ResponseEntity<Visitor> addVisitor(@RequestBody Visitor visitor){
+    public ResponseEntity<Visitor> addVisitor(@RequestBody Visitor visitor) {
         visitor.setId(counter.incrementAndGet());
         visitors.add(visitor);
         return ResponseEntity.ok(visitor);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVisitor(@PathVariable Long id) {
+        boolean removed = visitors.removeIf(visitor -> visitor.getId().equals(id));
 
+        if (removed) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
+
+        return ResponseEntity.notFound().build(); // 404 Not Found
+    }
 
 
 }
