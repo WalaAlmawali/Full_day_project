@@ -5,10 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.sun.tools.javac.jvm.ByteCodes.ret;
 
 @RestController
 @RequestMapping("/api/visitors")
@@ -51,5 +52,12 @@ public class VisitorController {
         return ResponseEntity.notFound().build(); // 404 Not Found
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Map<String, Integer>> getTotalVisitors() {
+        Map<String, Integer> response = new HashMap<>();
+        response.put("total", visitors.size());
+
+        return ResponseEntity.ok(response);
+    }
 
 }
